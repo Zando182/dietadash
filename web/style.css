@@ -180,7 +180,9 @@ label.riga-scelta input { accent-color: var(--acc-forte); width: 15px; height: 1
 .tabella-guscio { overflow-x: auto; }
 table.registro { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
 table.registro th {
-  position: sticky; top: 0; background: var(--ink-850); color: var(--ink-400);
+  /* z-index: senza, le righe che scorrono sotto l'intestazione fissa le
+     passano sopra. Si nota arrivando dal calendario, che scorre a meta' tabella. */
+  position: sticky; top: 0; z-index: 2; background: var(--ink-850); color: var(--ink-400);
   font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
   text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--ink-700);
 }
