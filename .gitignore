@@ -1,0 +1,16 @@
+# Il workbook e' personale: contiene anche il foglio Misure (peso,
+# circonferenze) e resta sul tuo computer, fuori dal repository.
+# Al primo avvio il programma ne crea uno vuoto se non lo trova.
+Dieta_data.xlsx
+
+# Copie di sicurezza: le rigenera il programma a ogni salvataggio.
+data/backup/
+
+# File temporanei di Excel mentre il workbook e' aperto.
+~$*.xlsx
+*.xlsx.tmp
+
+__pycache__/
+*.pyc
+.DS_Store
+*.log

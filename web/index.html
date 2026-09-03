@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DietaDash · Registro e statistiche della dieta</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🥗</text></svg>"
+    />
+  </head>
+  <body>
+    <header class="testata">
+      <div class="guscio testata-riga">
+        <h1 class="marchio">Dieta<span>Dash</span></h1>
+        <nav class="schede" id="schede" aria-label="Pagine"></nav>
+        <div class="testata-destra">
+          <span class="conteggio" id="conteggio"></span>
+          <span class="spia" id="spia" title="Stato del collegamento col workbook">…</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="guscio" id="pagina">
+      <div class="vuoto">Carico il registro…</div>
+    </main>
+
+    <footer class="guscio pie" id="pie"></footer>
+    <div id="brindisi" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

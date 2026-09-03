@@ -1,0 +1,264 @@
+/* Palette del progetto TCGDash, con l'accento portato dall'azzurro all'arancio. */
+:root {
+  --ink-950: #0a0c10;
+  --ink-900: #101319;
+  --ink-850: #151922;
+  --ink-800: #1b2029;
+  --ink-700: #262c38;
+  --ink-600: #38404f;
+  --ink-400: #7c8798;
+  --ink-300: #a6b0be;
+  --ink-100: #e7ebf1;
+
+  --acc: #fb923c;
+  --acc-forte: #f97316;
+  --acc-chiaro: #fdba74;
+  --acc-velo: rgba(251, 146, 60, 0.15);
+  --acc-bordo: rgba(249, 115, 22, 0.55);
+
+  --ok: #3fbf7f;
+  --ko: #f4626f;
+  --warn: #fbbf24;
+
+  --font: 'Inter var', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ink-950);
+  color: var(--ink-100);
+  font-family: var(--font);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+* { scrollbar-width: thin; scrollbar-color: var(--ink-600) transparent; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: var(--ink-600); border-radius: 99px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+input, select, textarea, button { font: inherit; }
+input[type='date']::-webkit-calendar-picker-indicator { filter: invert(0.7); cursor: pointer; }
+
+/* ------------------------------------------------------------ impalcatura */
+
+.guscio { max-width: 1600px; margin: 0 auto; padding: 0 16px; }
+
+header.testata {
+  position: sticky; top: 0; z-index: 40;
+  border-bottom: 1px solid rgba(38, 44, 56, 0.7);
+  background: rgba(10, 12, 16, 0.95);
+  backdrop-filter: blur(8px);
+}
+.testata-riga {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: 8px 16px; padding: 10px 0 8px;
+}
+h1.marchio { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.01em; }
+h1.marchio span { color: var(--acc); }
+
+nav.schede { display: flex; flex-wrap: wrap; gap: 4px; }
+nav.schede button {
+  border: 0; background: transparent; color: var(--ink-300);
+  padding: 6px 10px; border-radius: 8px; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: background-color 0.15s, color 0.15s;
+}
+nav.schede button:hover { background: var(--ink-850); color: var(--ink-100); }
+nav.schede button[aria-current='page'] { background: var(--acc-velo); color: var(--acc-chiaro); font-weight: 600; }
+
+.testata-destra { margin-left: auto; display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.conteggio { color: var(--ink-400); }
+
+.spia {
+  border-radius: 999px; border: 1px solid var(--ink-700); background: var(--ink-850);
+  color: var(--ink-400); padding: 2px 9px; font-size: 11px; font-weight: 500;
+}
+.spia.viva { border-color: rgba(63, 191, 127, 0.5); background: rgba(63, 191, 127, 0.1); color: var(--ok); }
+.spia.morta { border-color: rgba(244, 98, 111, 0.5); background: rgba(244, 98, 111, 0.1); color: var(--ko); }
+
+main { padding: 16px 0 32px; display: flex; flex-direction: column; gap: 12px; }
+footer.pie { color: var(--ink-600); font-size: 11px; padding-bottom: 24px; }
+
+/* ----------------------------------------------------------------- schede */
+
+.card { border-radius: 12px; border: 1px solid rgba(38, 44, 56, 0.7); background: var(--ink-900); }
+
+.sezione > header {
+  display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between;
+  gap: 8px 12px; padding: 8px 12px; border-bottom: 1px solid rgba(38, 44, 56, 0.7);
+}
+.sezione > header h2 {
+  margin: 0; font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--ink-300);
+}
+.sezione > header p { margin: 2px 0 0; font-size: 11px; color: var(--ink-400); }
+.sezione .corpo { padding: 12px; }
+
+.griglia-stat {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(178px, 1fr));
+}
+.stat { padding: 10px 12px; }
+.stat .etichetta {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--ink-400);
+}
+.stat .valore { margin-top: 2px; font-size: 22px; font-weight: 600; line-height: 1.15; }
+.stat .sotto { margin-top: 3px; font-size: 11px; color: var(--ink-400); }
+.stat .sotto b { color: var(--acc-chiaro); font-weight: 600; }
+.stat.acc { border-color: var(--acc-bordo); background: linear-gradient(180deg, var(--acc-velo), transparent 70%); }
+.stat.acc .valore { color: var(--acc-chiaro); }
+.buono { color: var(--ok); }
+.cattivo { color: var(--ko); }
+.attenzione { color: var(--warn); }
+
+/* ---------------------------------------------------------------- comandi */
+
+.campo {
+  width: 100%; border-radius: 8px; border: 1px solid var(--ink-700);
+  background: var(--ink-850); color: var(--ink-100);
+  padding: 7px 10px; font-size: 14px; outline: none;
+}
+.campo::placeholder { color: var(--ink-400); }
+.campo:focus { border-color: var(--acc-bordo); box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  border-radius: 8px; border: 1px solid var(--ink-700); background: var(--ink-800);
+  color: var(--ink-100); padding: 7px 12px; font-size: 14px; font-weight: 500;
+  cursor: pointer; transition: background-color 0.15s, border-color 0.15s;
+}
+.btn:hover:not(:disabled) { border-color: var(--ink-600); background: var(--ink-700); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primario {
+  border-color: var(--acc-bordo); background: var(--acc-forte); color: #1a1005; font-weight: 700;
+}
+.btn-primario:hover:not(:disabled) { background: var(--acc); border-color: var(--acc); }
+.btn-pericolo { border-color: rgba(244, 98, 111, 0.5); color: #fca5ad; }
+.btn-pericolo:hover:not(:disabled) { background: rgba(244, 98, 111, 0.15); }
+
+.interruttore { display: flex; gap: 4px; flex-wrap: wrap; }
+.interruttore button {
+  border-radius: 999px; border: 1px solid var(--ink-700); background: var(--ink-850);
+  color: var(--ink-300); padding: 3px 11px; font-size: 12px; font-weight: 500; cursor: pointer;
+}
+.interruttore button[aria-pressed='true'] {
+  border-color: var(--acc-bordo); background: var(--acc-velo); color: var(--acc-chiaro); font-weight: 600;
+}
+
+label.riga-scelta {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--ink-700); background: var(--ink-850);
+  padding: 7px 10px; font-size: 14px; user-select: none;
+}
+label.riga-scelta:has(input:checked) {
+  border-color: var(--acc-bordo); background: var(--acc-velo); color: var(--acc-chiaro);
+}
+label.riga-scelta input { accent-color: var(--acc-forte); width: 15px; height: 15px; }
+
+.modulo { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+.gruppo { display: flex; flex-direction: column; gap: 4px; }
+.gruppo > span {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--ink-400);
+}
+.larga { grid-column: 1 / -1; }
+
+/* --------------------------------------------------------------- tabelle */
+
+.tabella-guscio { overflow-x: auto; }
+table.registro { width: 100%; border-collapse: collapse; font-size: 13px; white-space: nowrap; }
+table.registro th {
+  position: sticky; top: 0; background: var(--ink-850); color: var(--ink-400);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--ink-700);
+}
+table.registro td { padding: 6px 10px; border-bottom: 1px solid rgba(38, 44, 56, 0.55); color: var(--ink-300); }
+table.registro tbody tr:hover { background: var(--ink-850); }
+table.registro tbody tr.sgarro td:first-child { box-shadow: inset 3px 0 0 var(--ko); }
+table.registro td.num { text-align: center; }
+.pastiglia {
+  display: inline-block; border-radius: 999px; padding: 1px 8px;
+  font-size: 11px; font-weight: 600; border: 1px solid transparent;
+}
+.pastiglia.si { background: rgba(63, 191, 127, 0.14); color: var(--ok); border-color: rgba(63, 191, 127, 0.4); }
+.pastiglia.no { background: var(--ink-850); color: var(--ink-600); border-color: var(--ink-700); }
+.pastiglia.rossa { background: rgba(244, 98, 111, 0.14); color: var(--ko); border-color: rgba(244, 98, 111, 0.4); }
+.pastiglia.acc { background: var(--acc-velo); color: var(--acc-chiaro); border-color: var(--acc-bordo); }
+
+/* ------------------------------------------------------------ calendario */
+
+.calendario { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); }
+.mese-titolo {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--ink-300); margin: 0 0 6px; display: flex; justify-content: space-between; align-items: baseline;
+}
+.mese-titolo small { color: var(--ink-400); font-size: 11px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+/* minmax(0,1fr): senza il minimo a zero le celle non scendono sotto il loro
+   contenuto e la griglia sborda dalla scheda del mese. */
+.mese-griglia { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.mese-griglia .dow {
+  font-size: 10px; color: var(--ink-600); text-align: center; padding-bottom: 2px; font-weight: 600;
+}
+/* Altezza fissa invece di aspect-ratio: in una griglia le celle vengono
+   stirate all'altezza della riga, e l'aspect-ratio ne ricalcolerebbe la
+   larghezza facendole uscire dalla colonna. */
+.giorno {
+  height: 26px; border-radius: 5px; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; border: 1px solid transparent; position: relative;
+}
+/* "fuori" e non "vuoto": .vuoto e' lo stile globale degli stati vuoti, con
+   40px di padding, e su queste celle sfondava l'altezza della riga. */
+.giorno.fuori { background: transparent; border-color: transparent; }
+.giorno.assente { background: var(--ink-850); color: var(--ink-600); border-color: var(--ink-800); }
+.giorno.seguita { background: rgba(63, 191, 127, 0.22); color: #a7f3cf; border-color: rgba(63, 191, 127, 0.4); }
+.giorno.sgarro { background: rgba(244, 98, 111, 0.28); color: #ffc4ca; border-color: rgba(244, 98, 111, 0.55); }
+.giorno.futuro { background: var(--ink-900); color: var(--ink-700); border-color: var(--ink-850); border-style: dashed; }
+.giorno.check { box-shadow: 0 0 0 2px var(--acc-forte); }
+.giorno[data-cliccabile] { cursor: pointer; }
+.giorno[data-cliccabile]:hover { outline: 2px solid var(--acc); outline-offset: 1px; }
+
+.legenda { display: flex; flex-wrap: wrap; gap: 10px; font-size: 11px; color: var(--ink-400); align-items: center; }
+.legenda i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; margin-right: 5px; vertical-align: -1px; }
+
+/* -------------------------------------------------------------- grafici */
+
+.grafico { width: 100%; display: block; }
+.due-colonne { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+
+.barra-riga { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: center; margin-bottom: 9px; }
+.barra-riga .nome { font-size: 12px; color: var(--ink-300); text-align: right; }
+.barra-pista { display: flex; flex-direction: column; gap: 4px; }
+/* Il valore sta fuori dalla barra: dentro verrebbe tagliato dalle barre corte. */
+.traccia { display: grid; grid-template-columns: 1fr 40px; gap: 8px; align-items: center; }
+.traccia b { font-size: 11px; font-weight: 600; color: var(--ink-400); }
+.barra { height: 10px; border-radius: 3px; min-width: 2px; transition: width 0.3s; }
+.barra.tot { background: var(--acc-forte); }
+.barra.chk { background: var(--ink-600); }
+.traccia:first-child b { color: var(--acc-chiaro); }
+
+.avviso {
+  border-radius: 12px; padding: 9px 12px; font-size: 14px;
+  border: 1px solid rgba(244, 98, 111, 0.5); background: rgba(244, 98, 111, 0.1); color: #ffd7db;
+}
+.avviso.buono { border-color: rgba(63, 191, 127, 0.5); background: rgba(63, 191, 127, 0.1); color: #c9f6e2; }
+
+#brindisi {
+  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+}
+#brindisi div {
+  border-radius: 10px; padding: 9px 13px; font-size: 13px; font-weight: 500;
+  border: 1px solid var(--ink-700); background: var(--ink-800); color: var(--ink-100);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); animation: entra 0.2s ease-out;
+}
+#brindisi div.ok { border-color: rgba(63, 191, 127, 0.5); background: rgba(20, 45, 35, 0.97); color: #c9f6e2; }
+#brindisi div.ko { border-color: rgba(244, 98, 111, 0.5); background: rgba(52, 20, 25, 0.97); color: #ffd7db; }
+#brindisi div.info { border-color: var(--acc-bordo); background: rgba(52, 33, 15, 0.97); color: var(--acc-chiaro); }
+@keyframes entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.vuoto { padding: 40px 12px; text-align: center; font-size: 14px; color: var(--ink-400); }
+.nota-piccola { font-size: 11px; color: var(--ink-400); margin: 0; }
