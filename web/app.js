@@ -19,6 +19,10 @@ const GIORNI_BREVI = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom']
 const MESI = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
   'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre']
 
+/** Timbro di versione della copia pubblicata (vedi index.html). In locale
+ *  vale "sviluppo" e non serve, perche' il server manda gia' no-store. */
+const VERSIONE = document.querySelector('meta[name="versione"]')?.content || 'sviluppo'
+
 const PAGINE = [
   { id: 'panoramica', etichetta: 'Panoramica', icona: '📊' },
   { id: 'calendario', etichetta: 'Calendario', icona: '📅' },
@@ -221,7 +225,7 @@ async function carica() {
     stato.solaLettura = false
   } catch (e) {
     try {
-      assorbi(await chiedi('dati.json'))
+      assorbi(await chiedi(`dati.json?v=${encodeURIComponent(VERSIONE)}`))
       stato.collegato = false
       stato.solaLettura = true
       // Online il server non arrivera' mai: continuare a interrogarlo sarebbe

@@ -27,7 +27,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Niente build: la dashboard e' HTML, CSS e JavaScript semplice.
+      # Niente build, ma le risorse vanno timbrate: Pages le serve con
+      # max-age=600, quindi senza un indirizzo nuovo il browser continuerebbe
+      # a usare la versione di prima per dieci minuti dopo ogni deploy.
+      - name: Timbra la versione sulle risorse
+        run: |
+          V="${GITHUB_SHA::8}"
+          sed -i \
+            -e "s|content=\"sviluppo\"|content=\"$V\"|" \
+            -e "s|href=\"style.css\"|href=\"style.css?v=$V\"|" \
+            -e "s|src=\"app.js\"|src=\"app.js?v=$V\"|" \
+            web/index.html
+          grep -q "app.js?v=$V" web/index.html || { echo "Timbro non applicato"; exit 1; }
+          echo "Versione pubblicata: $V"
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
