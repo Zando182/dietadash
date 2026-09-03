@@ -48,6 +48,7 @@ const stato = {
   pagina: leggiHash(),
   bozza: null, // giorno in modifica nella pagina Inserisci
   filtroRegistro: '',
+  evidenzia: null, // giorno da mostrare nel registro, arrivando dal calendario
 }
 
 // -------------------------------------------------------------- utilitari
@@ -532,6 +533,9 @@ function vistaCalendario() {
     m++
     if (m > 11) { m = 0; a++ }
   }
+  // Dal mese piu' recente: e' quello che si guarda, e cosi' e' subito in alto
+  // invece che in fondo a un anno di calendari.
+  mesi.reverse()
 
   const disegnaMese = ([anno, mese]) => {
     const inizio = new Date(anno, mese, 1)
@@ -565,9 +569,15 @@ function vistaCalendario() {
       const check = g && /check/i.test(g.note)
       celle.push(el('div', {
         class: `giorno ${classe}${check ? ' check' : ''}`,
-        title: check ? `${titolo}\n★ Check` : titolo,
-        'data-cliccabile': !stato.solaLettura || null,
-        onclick: stato.solaLettura ? null : () => { stato.bozza = iso; vai('inserisci') },
+        title: `${check ? `${titolo}\n★ Check` : titolo}\n\n(clicca per vederlo nel registro)`,
+        'data-cliccabile': true,
+        // Il registro esiste anche nella copia online, quindi qui non serve
+        // la guardia di sola lettura che vale per la pagina Inserisci.
+        onclick: () => {
+          stato.evidenzia = iso
+          stato.filtroRegistro = ''   // un filtro attivo potrebbe nascondere proprio quel giorno
+          vai('registro')
+        },
       }, String(d)))
     }
 
@@ -581,7 +591,7 @@ function vistaCalendario() {
     )
   }
 
-  return sezione('Calendario', 'Verde: dieta seguita. Rosso: sgarro. Il bordo arancione segna un check. Clicca un giorno per modificarlo.',
+  return sezione('Calendario', 'Dal mese più recente. Verde: dieta seguita. Rosso: sgarro. Il bordo arancione segna un check. Clicca un giorno per vederlo nel registro.',
     el('div', { class: 'legenda' },
       el('span', { html: "<i style='background:rgba(63,191,127,.5)'></i>seguita" }),
       el('span', { html: "<i style='background:rgba(244,98,111,.6)'></i>sgarro" }),
@@ -786,7 +796,8 @@ function vistaRegistro() {
     el('thead', {}, el('tr', {}, ...intestazioni.map((t) => el('th', {}, t)))),
     el('tbody', {}, ...righe.map((g) =>
       el('tr', {
-        class: g.sgarro ? 'sgarro' : '',
+        class: [g.sgarro ? 'sgarro' : '', g.data === stato.evidenzia ? 'evidenziato' : ''].filter(Boolean).join(' '),
+        'data-giorno': g.data,
         style: stato.solaLettura ? '' : 'cursor:pointer',
         onclick: stato.solaLettura ? null : () => { stato.bozza = g.data; vai('inserisci') },
       },
@@ -813,6 +824,7 @@ function vistaRegistro() {
 // ------------------------------------------------------------------ telaio
 
 function vai(p) {
+  if (p !== 'registro') stato.evidenzia = null
   location.hash = p
   stato.pagina = p
   disegna()
@@ -891,6 +903,13 @@ function disegna() {
       : stato.pagina === 'inserisci' ? vistaInserisci()
       : vistaRegistro(),
   )
+
+  // La riga puo' essere a centinaia di posizioni di distanza dentro il
+  // contenitore che scorre: arrivandoci dal calendario va portata in vista.
+  if (stato.pagina === 'registro' && stato.evidenzia) {
+    const riga = main.querySelector(`tr[data-giorno="${stato.evidenzia}"]`)
+    if (riga) riga.scrollIntoView({ block: 'center' })
+  }
 
   $('#pie').textContent = stato.solaLettura
     ? 'DietaDash — copia pubblicata, di sola lettura. Sul tuo computer la stessa pagina scrive dentro Dieta_data.xlsx.'

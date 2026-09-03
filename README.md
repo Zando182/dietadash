@@ -116,8 +116,9 @@ delle colonne, è il contratto fra i due.
   due. Il colore segue il significato, non il segno: meno sgarri è verde anche
   se la variazione è negativa. Poi countdown del prossimo check, andamento
   settimanale degli ultimi 3 mesi, distribuzione di carboidrati e proteine.
-- **Calendario** — mese per mese: verde dieta seguita, rosso sgarro, grigio
-  senza dati, bordo arancione sui check. Clicca un giorno per modificarlo.
+- **Calendario** — mese per mese dal più recente: verde dieta seguita, rosso
+  sgarro, grigio senza dati, bordo arancione sui check. Clicca un giorno per
+  aprirlo nel registro, dove la riga viene evidenziata.
 - **Inserisci** — un giorno alla volta, con i valori già usati come
   suggerimenti. Se scrivi un alimento da sgarro la spunta si accende da sola.
 - **Registro** — tutto il foglio, con ricerca. Clicca una riga per modificarla.

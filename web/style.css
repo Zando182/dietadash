@@ -187,6 +187,10 @@ table.registro th {
 table.registro td { padding: 6px 10px; border-bottom: 1px solid rgba(38, 44, 56, 0.55); color: var(--ink-300); }
 table.registro tbody tr:hover { background: var(--ink-850); }
 table.registro tbody tr.sgarro td:first-child { box-shadow: inset 3px 0 0 var(--ko); }
+/* Riga raggiunta dal calendario: si deve trovare a colpo d'occhio. */
+table.registro tbody tr.evidenziato td { background: var(--acc-velo); color: var(--ink-100); }
+table.registro tbody tr.evidenziato td:first-child { box-shadow: inset 3px 0 0 var(--acc-forte); }
+table.registro tbody tr.evidenziato.sgarro td:first-child { box-shadow: inset 3px 0 0 var(--acc-forte); }
 table.registro td.num { text-align: center; }
 .pastiglia {
   display: inline-block; border-radius: 999px; padding: 1px 8px;
