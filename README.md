@@ -111,9 +111,11 @@ delle colonne, è il contratto fra i due.
 
 ## Pagine
 
-- **Panoramica** — riquadri con le medie (sempre col confronto *dall'inizio* /
-  *dall'ultimo check*), countdown del prossimo check, andamento settimanale
-  degli ultimi 3 mesi, distribuzione di carboidrati e proteine.
+- **Panoramica** — riquadri con le medie: in grande il periodo *dall'ultimo
+  check*, in piccolo la media *dall'inizio*, e una percentuale che confronta i
+  due. Il colore segue il significato, non il segno: meno sgarri è verde anche
+  se la variazione è negativa. Poi countdown del prossimo check, andamento
+  settimanale degli ultimi 3 mesi, distribuzione di carboidrati e proteine.
 - **Calendario** — mese per mese: verde dieta seguita, rosso sgarro, grigio
   senza dati, bordo arancione sui check. Clicca un giorno per modificarlo.
 - **Inserisci** — un giorno alla volta, con i valori già usati come

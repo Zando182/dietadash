@@ -282,12 +282,35 @@ async function sorveglia() {
 
 // ------------------------------------------------------------- componenti
 
-function statCard({ etichetta, valore, sotto, tono = '', accento = false }) {
+function statCard({ etichetta, valore, sotto, tono = '', accento = false, variazione = null }) {
   return el('div', { class: `card stat${accento ? ' acc' : ''}` },
     el('div', { class: 'etichetta' }, etichetta),
-    el('div', { class: `valore ${tono}` }, valore),
+    el('div', { class: 'riga-valore' },
+      el('div', { class: `valore ${tono}` }, valore),
+      variazione,
+    ),
     sotto ? el('div', { class: 'sotto', html: sotto }) : null,
   )
+}
+
+/**
+ * Quanto e' cambiato il periodo dall'ultimo check rispetto alla media di
+ * sempre. Il segno da solo non basta a dire se e' una buona notizia: piu'
+ * allenamenti e' un miglioramento, piu' sgarri no. Per questo il verso
+ * "buono" arriva da fuori invece di essere dedotto dal segno.
+ */
+function distintivo(recente, generale, versoBuono = +1) {
+  if (recente === null || generale === null || !generale) return null
+  const scarto = (recente - generale) / generale
+  if (Math.abs(scarto) < 0.005) {
+    return el('span', { class: 'variazione pari', title: 'Come la media di sempre.' }, '=')
+  }
+  const buono = Math.sign(scarto) === Math.sign(versoBuono)
+  const segno = scarto > 0 ? '+' : '−'
+  return el('span', {
+    class: `variazione ${buono ? 'su' : 'giu'}`,
+    title: `${(scarto * 100).toFixed(1)}% rispetto alla media dall'inizio della dieta.`,
+  }, `${segno}${Math.abs(Math.round(scarto * 100))}%`)
 }
 
 function sezione(titolo, suggerimento, destra, ...corpo) {
@@ -421,7 +444,9 @@ function vistaPanoramica() {
   const prossimo = stato.config.prossimo_check || ''
   const mancano = prossimo ? giorniFra(oggiISO(), prossimo) : null
 
-  const sotto = (v) => `dall'ultimo check <b>${num(v)}</b>`
+  // Il numero grande e' il periodo dall'ultimo check: e' quello su cui puoi
+  // ancora intervenire. La media di sempre resta sotto, come metro di paragone.
+  const generale = (v) => `generale <b>${v}</b>`
 
   const carte = el('div', { class: 'griglia-stat' },
     statCard({
@@ -434,29 +459,34 @@ function vistaPanoramica() {
     }),
     statCard({
       etichetta: 'Allenamenti a settimana',
-      valore: num(tot.allenamentiSett),
-      sotto: `${sotto(chk.allenamentiSett)} · ${aParole(tot.allenamentiSett)}`,
+      valore: num(chk.allenamentiSett),
+      variazione: distintivo(chk.allenamentiSett, tot.allenamentiSett, +1),
+      sotto: `${generale(num(tot.allenamentiSett))} · ${aParole(chk.allenamentiSett)}`,
     }),
     statCard({
       etichetta: 'Passi a settimana',
-      valore: num(tot.passiSett),
-      sotto: `${sotto(chk.passiSett)} · ${aParole(tot.passiSett)}`,
+      valore: num(chk.passiSett),
+      variazione: distintivo(chk.passiSett, tot.passiSett, +1),
+      sotto: `${generale(num(tot.passiSett))} · ${aParole(chk.passiSett)}`,
     }),
     statCard({
       etichetta: 'Aderenza',
-      valore: perc(tot.aderenza),
-      tono: tot.aderenza >= 0.85 ? 'buono' : tot.aderenza >= 0.75 ? 'attenzione' : 'cattivo',
-      sotto: `dall'ultimo check <b>${perc(chk.aderenza)}</b> · ${tot.sgarri} sgarri su ${tot.giorni} giorni`,
+      valore: perc(chk.aderenza),
+      tono: chk.aderenza >= 0.85 ? 'buono' : chk.aderenza >= 0.75 ? 'attenzione' : 'cattivo',
+      variazione: distintivo(chk.aderenza, tot.aderenza, +1),
+      sotto: `${generale(perc(tot.aderenza))} · ${chk.sgarri} sgarri su ${chk.giorni} giorni`,
     }),
     statCard({
       etichetta: 'Sgarri a settimana',
-      valore: num(tot.sgarriSett),
-      sotto: sotto(chk.sgarriSett),
+      valore: num(chk.sgarriSett),
+      // Qui piu' non e' meglio: il verso buono e' verso il basso.
+      variazione: distintivo(chk.sgarriSett, tot.sgarriSett, -1),
+      sotto: generale(num(tot.sgarriSett)),
     }),
     statCard({
       etichetta: 'Giorni registrati',
-      valore: String(tot.giorni),
-      sotto: `${dataBreve(tot.dal)} → ${dataBreve(tot.al)} · ${tot.settimane.toFixed(1)} settimane`,
+      valore: String(chk.giorni),
+      sotto: `dall'ultimo check · in tutto <b>${tot.giorni}</b> dal ${dataBreve(tot.dal)}`,
     }),
   )
 
@@ -477,8 +507,10 @@ function vistaPanoramica() {
     ),
     sezione('Periodo di confronto', intestazioneCheck, null,
       el('p', { class: 'nota-piccola' },
-        "Le statistiche “dall'ultimo check” partono dal giorno marcato Check nelle note e arrivano a oggi. " +
-        'La data del prossimo check si cambia dalla pagina Inserisci ed è salvata nel foglio Config del workbook.'),
+        'I numeri grandi sono quelli dal giorno marcato Check nelle note fino a oggi; sotto, in piccolo, ' +
+        "la media dall'inizio della dieta. La percentuale confronta i due: verde quando il periodo recente " +
+        'va meglio della media, rossa quando va peggio. La data del prossimo check si cambia dalla pagina ' +
+        'Inserisci ed è salvata nel foglio Config del workbook.'),
     ),
   )
 }
